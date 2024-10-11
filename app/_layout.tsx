@@ -6,6 +6,14 @@ export default function RootLayout() {
       screenOptions={{
         headerShown: false,
       }}
-    ></Stack>
+    >
+      <Stack.Screen name="screens/onboarding/Welcome" />
+      <Stack.Screen name="screens/onboarding/InitialLogin" />
+      <Stack.Screen name="screens/main/Login" />
+      <Stack.Screen name="screens/main/Register" />
+      <Stack.Screen name="screens/main/Menu" />
+      <Stack.Screen name="screens/main/Order" />
+      <Stack.Screen name="screens/main/Cart" />
+    </Stack>
   );
 }

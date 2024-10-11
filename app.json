@@ -4,11 +4,11 @@
     "slug": "finecup",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "/assets/images/logo.png",
+    "icon": "./assets/images/coffee-cup.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "",
+      "image": "./assets/images/coffee-cup.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

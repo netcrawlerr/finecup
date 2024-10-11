@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { View, ImageBackground, Text, TouchableOpacity } from "react-native";
 
 const InitialLogin = () => {
@@ -22,6 +23,7 @@ const InitialLogin = () => {
         <TouchableOpacity className="bg-custom-red py-5 px-10 rounded-lg mx-5 flex-1">
           <Text className="text-center text-slate-100">Login</Text>
         </TouchableOpacity>
+
         <TouchableOpacity className="bg-slate-100 border border-custom-red py-5 px-10 rounded-lg mx-5 flex-1">
           <Text className="text-center text-custom-red">Register</Text>
         </TouchableOpacity>
