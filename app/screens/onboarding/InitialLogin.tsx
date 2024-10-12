@@ -1,14 +1,23 @@
 import { Link } from "expo-router";
-import { View, ImageBackground, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  Image,
+  StatusBar,
+} from "react-native";
 
 const InitialLogin = () => {
   return (
     <View className="flex text-center flex-col justify-center items-center h-screen">
-      <ImageBackground
-        source={require("../../../assets/images/coffee-shop.png")}
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <Image
+        source={require("@/assets/images/coffee-shop.png")}
         className="w-64 h-64"
         resizeMode="contain"
-      ></ImageBackground>
+      />
 
       <View>
         <Text className="mt-5 text-2xl text-stone-600 text-center">
@@ -20,13 +29,23 @@ const InitialLogin = () => {
       </View>
 
       <View className="flex flex-row justify-center items-center mt-5 text-center ">
-        <TouchableOpacity className="bg-custom-red py-5 px-10 rounded-lg mx-5 flex-1">
-          <Text className="text-center text-slate-100">Login</Text>
-        </TouchableOpacity>
+        <Link
+          href={{
+            pathname: "/screens/main/Login",
+          }}
+          className="bg-custom-red py-5 px-10 rounded-lg text-center text-slate-100 mx-5 flex-1"
+        >
+          Login
+        </Link>
 
-        <TouchableOpacity className="bg-slate-100 border border-custom-red py-5 px-10 rounded-lg mx-5 flex-1">
-          <Text className="text-center text-custom-red">Register</Text>
-        </TouchableOpacity>
+        <Link
+          href={{
+            pathname: "/screens/main/Register",
+          }}
+          className="bg-slate-100 border border-custom-red text-center text-custom-red py-5 px-10 rounded-lg mx-5 flex-1"
+        >
+          Register
+        </Link>
       </View>
     </View>
   );

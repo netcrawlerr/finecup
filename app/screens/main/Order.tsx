@@ -1,6 +1,4 @@
-import products from "../../../constants/data";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   ScrollView,
@@ -10,9 +8,29 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import useStore from "../../../hooks/useStore";
+import { useRouter } from "expo-router";
+
 const Order = () => {
+  /**
+   * i sectioned the UI in 5-7
+   */
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-  const price = 120;
+  const selectedProduct = useStore((state) => state.selectedProduct);
+  const clearSelectedProduct = useStore((state) => state.clearSelectedProduct);
+  const addToCart = useStore((state) => state.addToCart);
+
+  useEffect(() => {
+    if (!selectedProduct) {
+      router.back();
+    }
+    return () => clearSelectedProduct();
+  }, [selectedProduct, router, clearSelectedProduct]);
+
+  if (!selectedProduct) return null;
+
+  const price = selectedProduct.price;
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -23,19 +41,27 @@ const Order = () => {
   };
 
   const totalPrice = price * quantity;
+
+  const handleAddToCart = () => {
+    addToCart(selectedProduct, quantity);
+    router.push("/screens/main/Cart");
+  };
+
   return (
     <SafeAreaView className="flex-1">
       <ScrollView className="flex-1">
         <View>
-          {/* 1 */}
-          <View className="flex flex-row items-center justify-between mb-4 mt-20 px-4">
-            <Ionicons
-              name="chevron-back"
-              size={32}
-              color="#113225"
-              className="mr-2"
-            />
-            <Text className="text-2xl text-custom-red font-extrabold absolute left-1/2 transform -translate-x-1/2">
+          {/* Header */}
+          <View className="flex flex-row items-center justify-between mb-4 mt-20 px-4 relative">
+            <TouchableOpacity onPress={() => router.back()} className="z-10">
+              <Ionicons
+                name="chevron-back"
+                size={32}
+                color="#113225"
+                className="mr-2"
+              />
+            </TouchableOpacity>
+            <Text className="text-2xl text-custom-red font-extrabold absolute left-0 right-0 text-center">
               Order
             </Text>
           </View>
@@ -44,7 +70,7 @@ const Order = () => {
           {/* 2 */}
           <View className="flex justify-center items-center rounded-tr-3xl bg-custom-red h-[200px]">
             <Image
-              source={require("../../../assets/images/espresso.png")}
+              source={selectedProduct.image}
               style={{ width: 100, height: 100 }}
             />
           </View>
@@ -52,7 +78,7 @@ const Order = () => {
           {/* 3 */}
           <View className="flex flex-row justify-between px-8 mt-5">
             <View className="flex flex-col">
-              <Text className="text-2xl font-bold">Espresso</Text>
+              <Text className="text-2xl font-bold">{selectedProduct.name}</Text>
               <Text className="text-xl font-semibold">{price} Birr</Text>
             </View>
 
@@ -77,21 +103,13 @@ const Order = () => {
           <View className="flex flex-row justify-between px-8 mt-5">
             <View className="flex flex-col">
               <Text className="text-xl font-semibold mb-2">Description</Text>
-              <Text className="text-base">
-                The foundation of many coffee drinks, espresso is a concentrated
-                shot of pure coffee flavor. Brewed by forcing hot water through
-                finely-ground coffee beans under high pressure, it results in a
-                strong, bold taste with a distinctive crema on top. Ingredients:
-                Finely ground coffee beans and hot water. Served in a small cup
-                and often enjoyed straight or used as a base for other coffee
-                drinks.
-              </Text>
+              <Text className="text-base">{selectedProduct.description}</Text>
             </View>
           </View>
         </View>
       </ScrollView>
 
-      {/* Bottom fixed section */}
+      {/* Bottom  */}
       <View className="absolute bottom-0 left-0 right-0 pb-8 pt-4 px-8">
         <View className="flex flex-row justify-between items-center mb-4">
           <Text className="flex-1 text-xl font-semibold">Total:</Text>
@@ -100,7 +118,10 @@ const Order = () => {
           </Text>
         </View>
 
-        <TouchableOpacity className="bg-custom-red py-4 w-full items-center rounded-lg">
+        <TouchableOpacity
+          className="bg-custom-red py-4 w-full items-center rounded-lg"
+          onPress={handleAddToCart}
+        >
           <Text className="text-slate-100 font-semibold text-lg">
             Add To Cart
           </Text>
