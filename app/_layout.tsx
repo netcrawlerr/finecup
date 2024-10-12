@@ -14,6 +14,8 @@ export default function RootLayout() {
       <Stack.Screen name="screens/main/Menu" />
       <Stack.Screen name="screens/main/Order" />
       <Stack.Screen name="screens/main/Cart" />
+      <Stack.Screen name="screens/main/Checkout" />
+      <Stack.Screen name="screens/Main" />
     </Stack>
   );
 }

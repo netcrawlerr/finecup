@@ -37,8 +37,8 @@ const Entry = () => {
   return (
     <View>
       {/* <Text>Hey</Text> */}
-      {/* <Welcome /> */}
-      <InitialLogin />
+      <Welcome />
+      {/* <InitialLogin /> */}
     </View>
   );
 };
