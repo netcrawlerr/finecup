@@ -1,4 +1,5 @@
 import { body, validationResult } from "express-validator";
+import User from "../models/userModel.js";
 
 const commonValidator = (validateValues) => {
   return [
@@ -33,6 +34,13 @@ export const validateRegister = commonValidator([
     .notEmpty()
     .withMessage("Email required")
     .isEmail()
-    .withMessage("Email is required"),
+    .withMessage("Email is required")
+    .custom(async (email) => {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        throw new Error("Email already in use");
+      }
+      return true;
+    }),
   body("password").notEmpty().withMessage("Password required"),
 ]);
