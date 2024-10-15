@@ -7,6 +7,7 @@ const app = express();
 
 import authRouter from "./routes/authRouter.js";
 import orderRouter from "./routes/orderRouter.js";
+import paymentRouter from "./routes/paymentRouter.js";
 
 if (process.env.NODE_ENV === "netcrawlerdev") {
   app.use(morgan("dev"));
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/payments", paymentRouter);
 
 const PORT = process.env.PORT || 5000;
 try {
