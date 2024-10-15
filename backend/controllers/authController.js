@@ -18,10 +18,11 @@ export const register = async (req, res) => {
   console.log("********************");
 
   try {
-    const user = await User.create(req.body); 
+    const user = await User.create(req.body);
     res.status(200).json({ msg: "User Registered 🚀" });
   } catch (error) {
-    res.status(400).json({ error: error.message }); message
+    res.status(400).json({ error: error.message });
+    message;
   }
 };
 
