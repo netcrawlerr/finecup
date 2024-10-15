@@ -31,17 +31,14 @@ const Login = () => {
         password: password,
       });
       const data = await response.data;
-      console.log(data);
+      console.log("data is ", data);
+      setEmail("");
+      setPassword("");
       setLoginError("");
-
-  
       router.push("/screens/main/Menu");
     } catch (error) {
-      if (error) {
-        error.response.data.errors.forEach((error) => {
-          console.log("error is ", error.msg);
-          setLoginError(error.msg);
-        });
+      if (error.response && error.response.data) {
+        setLoginError(error.response.data.msg);
       } else {
         setLoginError("An unexpected error occurred.");
       }
