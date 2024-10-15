@@ -83,7 +83,7 @@ const Login = () => {
           <TouchableOpacity
             onPress={handleLogin}
             // href={{ pathname: "/screens/main/Menu" }}
-            className="bg-custom-red py-5 px-10 rounded-lg  text-slate-100"
+            className="bg-custom-red py-4 px-10 rounded-lg  text-slate-100"
           >
             <Text className="text-slate-100 text-center">Login</Text>
           </TouchableOpacity>

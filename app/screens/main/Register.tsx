@@ -130,7 +130,7 @@ const Register = () => {
 
           <TouchableOpacity
             onPress={handleRegister}
-            className="bg-custom-red py-5 px-10 rounded-lg flex items-center justify-center  text-center"
+            className="bg-custom-red py-4 px-10 rounded-lg flex items-center justify-center  text-center"
           >
             <Text className="text-slate-100">Register</Text>
           </TouchableOpacity>
