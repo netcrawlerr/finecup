@@ -11,6 +11,7 @@
   "author": "netcrawler",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
@@ -20,7 +21,8 @@
     "mongoose": "^8.7.1",
     "morgan": "^1.10.0",
     "nodejs": "file:",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "uuid": "^10.0.0"
   },
   "description": ""
 }
