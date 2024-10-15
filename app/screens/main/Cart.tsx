@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import useStore from "../../../hooks/useStore";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 const Cart = () => {
   const router = useRouter();
@@ -19,6 +19,8 @@ const Cart = () => {
     (state) => state.updateCartItemQuantity
   );
   const getCartTotal = useStore((state) => state.getCartTotal);
+
+  const total = getCartTotal();
 
   const handleRemoveItem = (productId: number) => {
     removeFromCart(productId);
@@ -52,71 +54,98 @@ const Cart = () => {
           </View>
 
           {/* Cart Items */}
-          {cart.map((item) => (
-            <View
-              key={item.id}
-              className="flex-row justify-between items-center px-4 py-4 border-b border-gray-200"
-            >
-              <Image
-                source={item.image}
-                style={{ width: 50, height: 50 }}
-                className="mr-4"
-              />
-              <View className="flex-1">
-                <Text className="text-lg font-semibold">{item.name}</Text>
-                <Text className="text-base">{item.price} Birr</Text>
-              </View>
-              <View className="flex-row items-center">
-                <TouchableOpacity
-                  className="border py-1 px-3 rounded"
-                  onPress={() =>
-                    handleUpdateQuantity(
-                      item.id,
-                      Math.max(1, item.quantity - 1)
-                    )
-                  }
-                >
-                  <Text className="text-lg font-bold">-</Text>
-                </TouchableOpacity>
-                <Text className="mx-2 text-lg">{item.quantity}</Text>
-                <TouchableOpacity
-                  className="border py-1 px-3 rounded"
-                  onPress={() =>
-                    handleUpdateQuantity(item.id, item.quantity + 1)
-                  }
-                >
-                  <Text className="text-lg font-bold">+</Text>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                className="ml-4"
-                onPress={() => handleRemoveItem(item.id)}
+
+          {total && total > 0 ? (
+            cart.map((item) => (
+              <View
+                key={item.id}
+                className="flex-row justify-between items-center px-4 py-4 border-b border-gray-200"
               >
-                <Ionicons name="trash-outline" size={24} color="#FF0000" />
-              </TouchableOpacity>
+                <Image
+                  source={item.image}
+                  style={{ width: 50, height: 50 }}
+                  className="mr-4"
+                />
+
+                <View className="flex-1">
+                  <Text className="text-lg font-semibold">{item.name}</Text>
+                  <Text className="text-base">{item.price} Birr</Text>
+                </View>
+                <View className="flex-row items-center">
+                  <TouchableOpacity
+                    className="border py-1 px-3 rounded"
+                    onPress={() =>
+                      handleUpdateQuantity(
+                        item.id,
+                        Math.max(1, item.quantity - 1)
+                      )
+                    }
+                  >
+                    <Text className="text-lg font-bold">-</Text>
+                  </TouchableOpacity>
+                  <Text className="mx-2 text-lg">{item.quantity}</Text>
+                  <TouchableOpacity
+                    className="border py-1 px-3 rounded"
+                    onPress={() =>
+                      handleUpdateQuantity(item.id, item.quantity + 1)
+                    }
+                  >
+                    <Text className="text-lg font-bold">+</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  className="ml-4"
+                  onPress={() => handleRemoveItem(item.id)}
+                >
+                  <Ionicons name="trash-outline" size={24} color="#FF0000" />
+                </TouchableOpacity>
+              </View>
+            ))
+          ) : (
+            <View className="flex justify-around items-center h-screen">
+              <View>
+                <Image
+                  source={require("@/assets/images/bag.png")}
+                  className="w-40 h-40 "
+                  resizeMode="contain"
+                />
+                <Text className="mt-5 text-3xl text-gray-600">
+                  Cart Empty !
+                </Text>
+              </View>
+              <Link
+                href={{ pathname: "/screens/main/Menu" }}
+                className="mt-5 text-3xl bg-custom-red px-12 py-2 rounded-sm text-slate-100"
+              >
+                Shop
+              </Link>
             </View>
-          ))}
+          )}
         </View>
       </ScrollView>
 
       {/* Bottom  */}
-      <View className="absolute bottom-0 left-0 right-0 pb-8 pt-4 px-8">
-        <View className="flex flex-row justify-between items-center mb-4">
-          <Text className="flex-1 text-xl font-semibold">Total:</Text>
-          <Text className="text-right text-xl font-bold">
-            {getCartTotal()} Birr
-          </Text>
-        </View>
+      {total && total > 0 ? (
+        <View className="absolute bottom-0 left-0 right-0 pb-8 pt-4 px-8">
+          <View className="flex flex-row justify-between items-center mb-4">
+            <Text className="flex-1 text-xl font-semibold">Total:</Text>
+            <Text className="text-right text-xl font-bold">
+              {getCartTotal()} Birr
+            </Text>
+          </View>
 
-        <TouchableOpacity
-          className="bg-custom-red py-4 w-full items-center rounded-lg"
-          onPress={handleProceedToCheckout}
-        >
-          <Text className="text-slate-100 font-semibold text-lg">
-            Proceed to Checkout
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            className="bg-custom-red py-4 w-full items-center rounded-lg"
+            onPress={handleProceedToCheckout}
+          >
+            <Text className="text-slate-100 font-semibold text-lg">
+              Proceed to Checkout
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        ""
+      )}
     </SafeAreaView>
   );
 };
