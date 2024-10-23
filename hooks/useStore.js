@@ -1,23 +1,27 @@
 import { create } from "zustand";
-import products from "../constants/data";
 
 const useStore = create((set, get) => ({
+  products: [], 
+  setProducts: (products) => set({ products }),
+
   selectedProduct: null,
   cart: [],
 
+
   setSelectedProduct: (productId) => {
-    const product = products.find((p) => p.id === productId);
+    const product = get().products.find((p) => p._id === productId); 
     set({ selectedProduct: product });
   },
+
   clearSelectedProduct: () => set({ selectedProduct: null }),
 
   addToCart: (product, quantity = 1) => {
     set((state) => {
-      const existingItem = state.cart.find((item) => item.id === product.id);
+      const existingItem = state.cart.find((item) => item._id === product._id); 
       if (existingItem) {
         return {
           cart: state.cart.map((item) =>
-            item.id === product.id
+            item._id === product._id 
               ? { ...item, quantity: item.quantity + quantity }
               : item
           ),
@@ -30,14 +34,16 @@ const useStore = create((set, get) => ({
 
   removeFromCart: (productId) => {
     set((state) => ({
-      cart: state.cart.filter((item) => item.id !== productId),
+      cart: state.cart.filter((item) => item._id !== productId), 
     }));
   },
 
   updateCartItemQuantity: (productId, quantity) => {
     set((state) => ({
       cart: state.cart.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
+        item._id === productId 
+          ? { ...item, quantity }
+          : item
       ),
     }));
   },

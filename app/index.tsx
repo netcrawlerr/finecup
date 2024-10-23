@@ -11,36 +11,18 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Welcome from "./screens/onboarding/Welcome";
-import InitialLogin from "./screens/onboarding/InitialLogin";
+
+import Menu from "./screens/main/Menu";
+import Login from "./screens/main/Login";
+import Cart from "./screens/main/Cart";
+import useUser from "@/hooks/useUser";
+import { BASE_URL } from "@/constants/URL";
 
 const Entry = () => {
-  // const [email, setEmail] = useState("uuser@gmail.com");
-  // const [password, setPassword] = useState("1234566");
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         "http://192.168.1.5:5000/api/auth/login",
-  //         {
-  //           email: email,
-  //           password: password,
-  //         }
-  //       );
-  //       const data = await response.data;
-  //       console.log(data);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-  //   fetch();
-  // }, [email]);
-  return (
-    <View>
-      {/* <Text>Hey</Text> */}
-      <Welcome />
-      {/* <InitialLogin /> */}
-    </View>
-  );
+  const { isLoggedIn, user } = useUser();
+  console.log("user in the <>", user);
+
+  return isLoggedIn ? <Menu /> : <Login />;
 };
 
 export default Entry;
