@@ -18,6 +18,8 @@ import { useRouter } from "expo-router";
 import MapView, { Marker } from "react-native-maps";
 import axios from "axios";
 import { BASE_URL } from "@/constants/URL";
+import { Image } from "react-native";
+import useUser from "@/hooks/useUser";
 
 const Checkout = () => {
   const router = useRouter();
@@ -25,12 +27,14 @@ const Checkout = () => {
   const getCartTotal = useStore((state) => state.getCartTotal);
   const clearCart = useStore((state) => state.clearCart);
 
-  const [name, setName] = useState("");
+  const { user } = useUser();
+
   const [address, setAddress] = useState({
     latitude: 9.0192,
     longitude: 38.7525,
   });
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [name, setName] = useState(user.firstName);
+  const [phoneNumber, setPhoneNumber] = useState(user.phone);
   const [markerCoordinate, setMarkerCoordinate] = useState({
     latitude: 9.0192,
     longitude: 38.7525,
@@ -39,12 +43,49 @@ const Checkout = () => {
   const [locationInput, setLocationInput] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
-  const [cardNumber, setCardNumber] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
-  const [cvv, setCvv] = useState("");
+  const [paymentSuccess, setPaymentSuccess] = useState(false); // New state variable
+  const [isPaymentFailed, setIsPaymentFailed] = useState(false);
+
+  const [transactionRef, setTransactionRef] = useState(null);
+  const [checkoutUrl, setCheckoutUrl] = useState(null);
+  const [isBrowserOpened, setIsBrowserOpened] = useState(false);
+
+  useEffect(() => {
+    if (isPaymentFailed) {
+      setModalVisible(false); // Close the modal
+    }
+  }, [isPaymentFailed]);
 
   const handlePlaceOrder = () => {
+    setTransactionRef(null);
+    setCheckoutUrl(null);
     setModalVisible(true);
+  };
+
+  const verifyPayment = async (transactionRef) => {
+    console.log("Verifying payment for transactionRef:", transactionRef);
+
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/payments/verify/${transactionRef}`
+      );
+      console.log("verifying..", response.data.chapaResponse.status);
+
+      if (response.data.chapaResponse.status === "success") {
+        setModalVisible(false);
+        setPaymentSuccess(true);
+        setSuccessModalVisible(true);
+        setIsPaymentFailed(false); // Reset the failure state
+      } else {
+        setPaymentSuccess(false);
+        setIsPaymentFailed(true); // Set failure state to trigger rerender
+        console.log("Payment verification failed");
+      }
+    } catch (error) {
+      console.error("Payment verification error", error);
+      setPaymentSuccess(false);
+      setIsPaymentFailed(true); // Set failure state to trigger rerender
+    }
   };
 
   const handlePayment = async () => {
@@ -52,30 +93,55 @@ const Checkout = () => {
       const total = getCartTotal();
       console.log("Payment data:", phoneNumber, total);
 
+      // Reset the previous transactionRef and checkoutUrl
+      setTransactionRef(null);
+      setCheckoutUrl(null);
+
+      console.log("Before api call ", transactionRef);
+      console.log("Before api call ", checkoutUrl);
+
       const response = await axios.post(BASE_URL + "/api/payments/pay", {
         amount: total,
         phoneNumber: phoneNumber,
       });
 
-      // console.log(response.data.data.checkout_url);
+      const responseData = response.data.data.data;
 
-      const checkoutUrl = response.data.data.checkout_url;
+      console.log("What", responseData.checkout_url);
+      console.log("ref", response.data.transactionRef);
+
+      const newCheckoutUrl = responseData.checkout_url;
+      const newTransactionRef = response.data.transactionRef;
+
+      console.log("New Checkout URL:", newCheckoutUrl);
+      console.log("New TransactionRef:", newTransactionRef);
+
+      setTransactionRef(newTransactionRef); // Save the new transaction ref
+      setCheckoutUrl(newCheckoutUrl); // Save the new checkout URL
+
       console.log("Checkout URL:", checkoutUrl);
+      console.log("Transactionref:", transactionRef);
 
       // Open the payment page
-      const result = await WebBrowser.openBrowserAsync(checkoutUrl);
 
-      if (result.type === "opened") {
-        // Payment success - show the success modal
-        setModalVisible(false);
-        setSuccessModalVisible(true);
-      } else {
-        // Handle cases where payment was canceled or failed
-        console.log("Payment was not completed");
-      }
+      const result = await WebBrowser.openBrowserAsync(newCheckoutUrl);
+
+      verifyPayment(newTransactionRef);
+      console.log("result", result);
+
+      // Check the result of the payment
     } catch (error) {
       console.log("Payment Error:", error);
+      setPaymentSuccess(false); // Payment failed due to an error
+      setIsPaymentFailed(true); // Set failure state
     }
+  };
+
+  const handleCancelPayment = () => {
+    // Clear previous transaction data
+    setTransactionRef(null);
+    setCheckoutUrl(null);
+    setModalVisible(false);
   };
 
   const handleSuccessClose = () => {
@@ -145,7 +211,7 @@ const Checkout = () => {
             <View className="px-4 py-4 bg-gray-100 mb-4">
               <Text className="text-xl font-bold mb-2">Order Summary</Text>
               {cart.map((item) => (
-                <View key={item.id} className="flex-row justify-between mb-2">
+                <View key={item._id} className="flex-row justify-between mb-2">
                   <Text>
                     {item.name} x{item.quantity}
                   </Text>
@@ -188,10 +254,10 @@ const Checkout = () => {
                   onChangeText={setLocationInput}
                 />
                 <TouchableOpacity
-                  className="flex justify-center items-center bg-custom-red rounded-md p-2 w-1/2 h-12"
+                  className="flex justify-center items-center border border-custom-red  rounded-md p-2 w-1/2 h-11"
                   onPress={handleSearchLocation}
                 >
-                  <Text className="text-slate-100 text-center">Search</Text>
+                  <Text className="text-custom-red text-center">Search</Text>
                 </TouchableOpacity>
               </View>
 
@@ -241,6 +307,7 @@ const Checkout = () => {
         </View>
 
         {/* Payment Modal */}
+        {/* Payment Modal */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -255,48 +322,38 @@ const Checkout = () => {
               backgroundColor: "rgba(0,0,0,0.5)",
             }}
           >
-            <View
-              style={{
-                width: 300,
-                padding: 20,
-                backgroundColor: "white",
-                borderRadius: 10,
-              }}
-            >
-              <Text className="text-lg font-bold mb-4">Payment</Text>
-              <TextInput
-                className="border border-gray-300 rounded-md p-2 mb-2"
-                placeholder="Card Number"
-                value={cardNumber}
-                onChangeText={setCardNumber}
-                keyboardType="numeric"
-              />
-              <TextInput
-                className="border border-gray-300 rounded-md p-2 mb-2"
-                placeholder="Expiration Date (MM/YY)"
-                value={expirationDate}
-                onChangeText={setExpirationDate}
-              />
-              <TextInput
-                className="border border-gray-300 rounded-md p-2 mb-2"
-                placeholder="CVV"
-                value={cvv}
-                onChangeText={setCvv}
-                keyboardType="numeric"
-              />
+            <View className="w-96 p-6 bg-white rounded-lg items-center">
+              <View className="flex flex-row justify-around w-full">
+                {/* Chapa Button */}
+                <TouchableOpacity
+                  onPress={handlePayment}
+                  className="flex flex-col items-center justify-center rounded-full w-24 h-24 p-4"
+                >
+                  <Image
+                    source={require("@/assets/images/chapa.png")}
+                    className="w-28 h-28 rounded-full"
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+
+                {/* Tele Birr Button */}
+                <TouchableOpacity
+                  onPress={handlePayment}
+                  className="flex flex-col items-center justify-center rounded-full w-24 h-24 p-4"
+                >
+                  <Image
+                    source={require("@/assets/images/tele_birr.png")}
+                    className="w-16 h-16 rounded-full"
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+
               <TouchableOpacity
-                className="bg-custom-red py-2 rounded-md"
-                onPress={handlePayment}
+                className="mt-6 border  py-4 w-full border-custom-red"
+                onPress={handleCancelPayment}
               >
-                <Text className="text-slate-100 text-center">
-                  Confirm Payment
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="mt-4"
-                onPress={() => setModalVisible(false)}
-              >
-                <Text className="text-blue-500 text-center">Cancel</Text>
+                <Text className="text-custom-red text-center">Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>

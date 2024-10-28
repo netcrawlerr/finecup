@@ -22,11 +22,13 @@ const Cart = () => {
 
   const total = getCartTotal();
 
-  const handleRemoveItem = (productId: number) => {
+  const handleRemoveItem = (productId: string) => {
+    // Change number to string
     removeFromCart(productId);
   };
 
-  const handleUpdateQuantity = (productId: number, newQuantity: number) => {
+  const handleUpdateQuantity = (productId: string, newQuantity: number) => {
+    // Change number to string
     updateCartItemQuantity(productId, newQuantity);
   };
 
@@ -58,7 +60,7 @@ const Cart = () => {
           {total && total > 0 ? (
             cart.map((item) => (
               <View
-                key={item.id}
+                key={item._id} // Change id to _id
                 className="flex-row justify-between items-center px-4 py-4 border-b border-gray-200"
               >
                 <Image
@@ -76,7 +78,7 @@ const Cart = () => {
                     className="border py-1 px-3 rounded"
                     onPress={() =>
                       handleUpdateQuantity(
-                        item.id,
+                        item._id, // Change id to _id
                         Math.max(1, item.quantity - 1)
                       )
                     }
@@ -86,8 +88,8 @@ const Cart = () => {
                   <Text className="mx-2 text-lg">{item.quantity}</Text>
                   <TouchableOpacity
                     className="border py-1 px-3 rounded"
-                    onPress={() =>
-                      handleUpdateQuantity(item.id, item.quantity + 1)
+                    onPress={
+                      () => handleUpdateQuantity(item._id, item.quantity + 1) // Change id to _id
                     }
                   >
                     <Text className="text-lg font-bold">+</Text>
@@ -95,7 +97,7 @@ const Cart = () => {
                 </View>
                 <TouchableOpacity
                   className="ml-4"
-                  onPress={() => handleRemoveItem(item.id)}
+                  onPress={() => handleRemoveItem(item._id)} // Change id to _id
                 >
                   <Ionicons name="trash-outline" size={24} color="#FF0000" />
                 </TouchableOpacity>
@@ -129,9 +131,7 @@ const Cart = () => {
         <View className="absolute bottom-0 left-0 right-0 pb-8 pt-4 px-8">
           <View className="flex flex-row justify-between items-center mb-4">
             <Text className="flex-1 text-xl font-semibold">Total:</Text>
-            <Text className="text-right text-xl font-bold">
-              {getCartTotal()} Birr
-            </Text>
+            <Text className="text-right text-xl font-bold">{total} Birr</Text>
           </View>
 
           <TouchableOpacity

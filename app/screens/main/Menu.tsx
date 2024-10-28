@@ -1,4 +1,3 @@
-import products from "@/constants/data";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import {
@@ -9,20 +8,44 @@ import {
   View,
   Image,
 } from "react-native";
-import useStore from "@/hooks/useStore";
+import useStore from "@/hooks/useStore"; // Import zustand store
 import { router } from "expo-router";
+import axios from "axios";
+import { BASE_URL } from "@/constants/URL";
+import AccountDropdown from "@/app/components/AccountDropdown";
 
 const Menu = () => {
   const setSelectedProduct = useStore((state) => state.setSelectedProduct);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  // Get products and the setter from the zustand store
+  const products = useStore((state) => state.products);
+  const setProducts = useStore((state) => state.setProducts);
+
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const categories = [
     "All",
     ...new Set(products.map((product) => product.category)),
   ];
 
+  // Fetch products from API and set in the zustand store
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(BASE_URL + "/api/products"); // Adjust the endpoint as necessary
+        setProducts(response.data); // Set products in zustand store
+        // console.log("Store products MENU", products);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, [setProducts]);
+
+  // Update filtered products based on category and search query
   useEffect(() => {
     const filtered = products.filter(
       (product) =>
@@ -30,21 +53,25 @@ const Menu = () => {
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProducts(filtered);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, products]);
+  // console.log(products[0].image);
 
   const handleCategoryPress = (category: string) => {
     setSelectedCategory(category);
-  
   };
 
   return (
     <View className="flex-1 bg-white">
       <View className="flex-row items-center justify-between px-4 pt-12 pb-4">
-        <TouchableOpacity onPress={() => router.back()}>
+        {/* <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={28} color="#113225" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text className="text-2xl text-custom-red font-bold">Menu</Text>
-        <View style={{ width: 28 }} />
+        {/* <View>
+          <Text>Account</Text>
+        </View> */}
+        <AccountDropdown />
+        {/* <View style={{ width: 28 }} /> */}
       </View>
 
       <View className="px-4 pt-4">
@@ -83,15 +110,15 @@ const Menu = () => {
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
             <TouchableOpacity
-              key={product.id}
+              key={product._id}
               className="flex-row items-center bg-gray-100 rounded-lg mb-4 overflow-hidden"
               onPress={() => {
-                setSelectedProduct(product.id);
+                setSelectedProduct(product._id);
                 router.push("/screens/main/Order");
               }}
             >
               <Image
-                source={product.image}
+                source={{ uri: product.image }} // Assuming the image is a URL
                 className="w-24 h-24 rounded-l-lg"
                 resizeMode="cover"
               />

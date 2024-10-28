@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import useStore from "../../../hooks/useStore";
+import useStore from "@/hooks/useStore";
 import { useRouter } from "expo-router";
 
 const Order = () => {
@@ -20,6 +20,9 @@ const Order = () => {
   const selectedProduct = useStore((state) => state.selectedProduct);
   const clearSelectedProduct = useStore((state) => state.clearSelectedProduct);
   const addToCart = useStore((state) => state.addToCart);
+
+  const products = useStore((state) => state.products);
+  console.log("Store products ORDER");
 
   useEffect(() => {
     if (!selectedProduct) {

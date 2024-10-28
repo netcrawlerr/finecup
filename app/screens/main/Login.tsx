@@ -1,4 +1,5 @@
 import { BASE_URL } from "@/constants/URL";
+import useUser from "@/hooks/useUser";
 import axios from "axios";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
@@ -19,6 +20,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
+  const { user, setUser } = useUser();
+
   const handleLogin = async () => {
     if (!email || !password) {
       setLoginError("All fields are required.");
@@ -31,7 +34,10 @@ const Login = () => {
         password: password,
       });
       const data = await response.data;
-      console.log("data is ", data);
+      // console.log("data is ", data);
+      await setUser(data.user);
+      console.log("User in Store is ", user);
+
       setEmail("");
       setPassword("");
       setLoginError("");

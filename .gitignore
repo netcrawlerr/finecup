@@ -20,3 +20,4 @@ expo-env.d.ts
 # @end expo-cli
 constants/API_KEY.js
 backend/.env
+visualize.json

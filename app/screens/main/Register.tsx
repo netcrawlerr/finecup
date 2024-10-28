@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { BASE_URL } from "@/constants/URL.js";
 import {
@@ -22,7 +22,6 @@ const Register = () => {
   const [registerError, setRegisterError] = useState("");
 
   const handleRegister = async () => {
-     
     if (!firstName || !lastName || !email || !password || !phone) {
       setRegisterError("All fields are required.");
       return;
@@ -46,6 +45,7 @@ const Register = () => {
         phone,
       });
       const data = await response.data;
+      router.replace("/screens/main/Login");
       setRegisterError("");
       console.log("response::: ", data);
     } catch (error) {
