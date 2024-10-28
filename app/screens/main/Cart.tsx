@@ -23,12 +23,12 @@ const Cart = () => {
   const total = getCartTotal();
 
   const handleRemoveItem = (productId: string) => {
-    // Change number to string
+   
     removeFromCart(productId);
   };
 
   const handleUpdateQuantity = (productId: string, newQuantity: number) => {
-    // Change number to string
+   
     updateCartItemQuantity(productId, newQuantity);
   };
 
@@ -60,7 +60,7 @@ const Cart = () => {
           {total && total > 0 ? (
             cart.map((item) => (
               <View
-                key={item._id} // Change id to _id
+                key={item._id} 
                 className="flex-row justify-between items-center px-4 py-4 border-b border-gray-200"
               >
                 <Image
@@ -78,7 +78,7 @@ const Cart = () => {
                     className="border py-1 px-3 rounded"
                     onPress={() =>
                       handleUpdateQuantity(
-                        item._id, // Change id to _id
+                        item._id, 
                         Math.max(1, item.quantity - 1)
                       )
                     }
@@ -89,7 +89,7 @@ const Cart = () => {
                   <TouchableOpacity
                     className="border py-1 px-3 rounded"
                     onPress={
-                      () => handleUpdateQuantity(item._id, item.quantity + 1) // Change id to _id
+                      () => handleUpdateQuantity(item._id, item.quantity + 1)
                     }
                   >
                     <Text className="text-lg font-bold">+</Text>
@@ -97,7 +97,7 @@ const Cart = () => {
                 </View>
                 <TouchableOpacity
                   className="ml-4"
-                  onPress={() => handleRemoveItem(item._id)} // Change id to _id
+                  onPress={() => handleRemoveItem(item._id)}
                 >
                   <Ionicons name="trash-outline" size={24} color="#FF0000" />
                 </TouchableOpacity>

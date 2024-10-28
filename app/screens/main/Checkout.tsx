@@ -43,7 +43,7 @@ const Checkout = () => {
   const [locationInput, setLocationInput] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false); // New state variable
+  const [paymentSuccess, setPaymentSuccess] = useState(false); 
   const [isPaymentFailed, setIsPaymentFailed] = useState(false);
 
   const [transactionRef, setTransactionRef] = useState(null);
@@ -52,7 +52,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if (isPaymentFailed) {
-      setModalVisible(false); // Close the modal
+      setModalVisible(false); 
     }
   }, [isPaymentFailed]);
 
@@ -75,16 +75,16 @@ const Checkout = () => {
         setModalVisible(false);
         setPaymentSuccess(true);
         setSuccessModalVisible(true);
-        setIsPaymentFailed(false); // Reset the failure state
+        setIsPaymentFailed(false); 
       } else {
         setPaymentSuccess(false);
-        setIsPaymentFailed(true); // Set failure state to trigger rerender
+        setIsPaymentFailed(true); 
         console.log("Payment verification failed");
       }
     } catch (error) {
       console.error("Payment verification error", error);
       setPaymentSuccess(false);
-      setIsPaymentFailed(true); // Set failure state to trigger rerender
+      setIsPaymentFailed(true); 
     }
   };
 
@@ -93,7 +93,7 @@ const Checkout = () => {
       const total = getCartTotal();
       console.log("Payment data:", phoneNumber, total);
 
-      // Reset the previous transactionRef and checkoutUrl
+     
       setTransactionRef(null);
       setCheckoutUrl(null);
 
@@ -116,29 +116,29 @@ const Checkout = () => {
       console.log("New Checkout URL:", newCheckoutUrl);
       console.log("New TransactionRef:", newTransactionRef);
 
-      setTransactionRef(newTransactionRef); // Save the new transaction ref
-      setCheckoutUrl(newCheckoutUrl); // Save the new checkout URL
+      setTransactionRef(newTransactionRef);
+      setCheckoutUrl(newCheckoutUrl); 
 
       console.log("Checkout URL:", checkoutUrl);
       console.log("Transactionref:", transactionRef);
 
-      // Open the payment page
+
 
       const result = await WebBrowser.openBrowserAsync(newCheckoutUrl);
 
       verifyPayment(newTransactionRef);
       console.log("result", result);
 
-      // Check the result of the payment
+     
     } catch (error) {
       console.log("Payment Error:", error);
-      setPaymentSuccess(false); // Payment failed due to an error
-      setIsPaymentFailed(true); // Set failure state
+      setPaymentSuccess(false);
+      setIsPaymentFailed(true); 
     }
   };
 
   const handleCancelPayment = () => {
-    // Clear previous transaction data
+   
     setTransactionRef(null);
     setCheckoutUrl(null);
     setModalVisible(false);
@@ -306,8 +306,7 @@ const Checkout = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Payment Modal */}
-        {/* Payment Modal */}
+      
         <Modal
           animationType="slide"
           transparent={true}

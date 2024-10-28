@@ -14,7 +14,6 @@ const AccountDropdown = () => {
   };
 
   const handleLogout = async () => {
-    // Implement your logout functionality
     console.log("Logging out...");
     try {
       const response = await axios.get(BASE_URL + "/api/auth/logout");
@@ -29,19 +28,19 @@ const AccountDropdown = () => {
   };
 
   const handleSettings = () => {
-    // Navigate to settings page
+    
     console.log("Navigating to settings...");
     setDropdownVisible(false);
   };
 
   return (
     <View>
-      {/* Account Button */}
+
       <TouchableOpacity onPress={toggleDropdown} style={styles.accountButton}>
         <Text style={styles.accountText}>Account</Text>
       </TouchableOpacity>
 
-      {/* Dropdown Modal */}
+
       <Modal
         visible={isDropdownVisible}
         transparent={true}
@@ -53,7 +52,7 @@ const AccountDropdown = () => {
           onPress={toggleDropdown}
         >
           <View style={styles.dropdownContainer}>
-            {/* Settings Option */}
+           
             <TouchableOpacity
               onPress={handleSettings}
               style={styles.dropdownItem}
@@ -61,7 +60,7 @@ const AccountDropdown = () => {
               <Text style={styles.dropdownText}>Settings</Text>
             </TouchableOpacity>
 
-            {/* Logout Option */}
+       
             <TouchableOpacity
               onPress={handleLogout}
               style={styles.dropdownItem}
@@ -77,37 +76,37 @@ const AccountDropdown = () => {
 
 const styles = {
   accountButton: {
-    padding: 8, // Equivalent to `p-2` in Tailwind
-    backgroundColor: "#E5E7EB", // Equivalent to `bg-gray-300`
-    borderRadius: 8, // Equivalent to `rounded`
+    padding: 8, 
+    backgroundColor: "#E5E7EB",
+    borderRadius: 8, 
   },
   accountText: {
-    fontSize: 18, // Equivalent to `text-lg`
-    fontWeight: "bold", // Equivalent to `font-bold`
+    fontSize: 18, 
+    fontWeight: "bold",
   },
   modalBackground: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Equivalent to backdrop opacity
+    backgroundColor: "rgba(0, 0, 0, 0.5)", 
   },
   dropdownContainer: {
-    backgroundColor: "#FFFFFF", // Equivalent to `bg-white`
-    borderRadius: 8, // Equivalent to `rounded-lg`
-    padding: 16, // Equivalent to `p-4`
-    width: 192, // Equivalent to `w-48`
+    backgroundColor: "#FFFFFF", 
+    borderRadius: 8, 
+    padding: 16, 
+    width: 192, 
   },
   dropdownItem: {
-    paddingVertical: 8, // Equivalent to `py-2`
-    borderBottomWidth: 1, // Equivalent to `border-b`
-    borderColor: "#E5E7EB", // Equivalent to `border-gray-200`
+    paddingVertical: 8, 
+    borderBottomWidth: 1, 
+    borderColor: "#E5E7EB", 
   },
   dropdownText: {
-    fontSize: 16, // Equivalent to `text-base`
+    fontSize: 16, 
   },
   logoutText: {
-    fontSize: 16, // Equivalent to `text-base`
-    color: "#EF4444", // Equivalent to `text-red-500`
+    fontSize: 16, 
+    color: "#EF4444", 
   },
 };
 

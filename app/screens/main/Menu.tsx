@@ -8,7 +8,7 @@ import {
   View,
   Image,
 } from "react-native";
-import useStore from "@/hooks/useStore"; // Import zustand store
+import useStore from "@/hooks/useStore"; 
 import { router } from "expo-router";
 import axios from "axios";
 import { BASE_URL } from "@/constants/URL";
@@ -19,7 +19,7 @@ const Menu = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // Get products and the setter from the zustand store
+ 
   const products = useStore((state) => state.products);
   const setProducts = useStore((state) => state.setProducts);
 
@@ -30,12 +30,12 @@ const Menu = () => {
     ...new Set(products.map((product) => product.category)),
   ];
 
-  // Fetch products from API and set in the zustand store
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(BASE_URL + "/api/products"); // Adjust the endpoint as necessary
-        setProducts(response.data); // Set products in zustand store
+        const response = await axios.get(BASE_URL + "/api/products");
+        setProducts(response.data); 
         // console.log("Store products MENU", products);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -45,7 +45,7 @@ const Menu = () => {
     fetchProducts();
   }, [setProducts]);
 
-  // Update filtered products based on category and search query
+  
   useEffect(() => {
     const filtered = products.filter(
       (product) =>
@@ -118,7 +118,7 @@ const Menu = () => {
               }}
             >
               <Image
-                source={{ uri: product.image }} // Assuming the image is a URL
+                source={{ uri: product.image }}
                 className="w-24 h-24 rounded-l-lg"
                 resizeMode="cover"
               />
