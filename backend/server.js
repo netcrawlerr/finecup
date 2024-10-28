@@ -6,6 +6,7 @@ import express from "express";
 const app = express();
 
 import authRouter from "./routes/authRouter.js";
+import productRouter from "./routes/productRouter.js";
 import orderRouter from "./routes/orderRouter.js";
 import paymentRouter from "./routes/paymentRouter.js";
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/payments", paymentRouter);
 

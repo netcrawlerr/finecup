@@ -19,6 +19,11 @@ const OrderSchema = new mongoose.Schema(
       enum: ["pending", "shipped", "delivered", "canceled"],
       default: "pending",
     },
+    payment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Payment",
+      required: true,
+    },
   },
   { timestamps: true }
 );

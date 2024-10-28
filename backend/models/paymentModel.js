@@ -2,12 +2,7 @@ import mongoose from "mongoose";
 
 const PaymentSchema = new mongoose.Schema(
   {
-    order: { type: mongoose.Schema.Types.ObjectId, ref: "Order", required: true },
-    paymentMethod: {
-      type: String,
-      enum: ["credit_card", "paypal", "bank_transfer", "cash"],
-      required: true,
-    },
+    transactionRef: { type: String, required: true },
     paymentStatus: {
       type: String,
       enum: ["pending", "completed", "failed"],
