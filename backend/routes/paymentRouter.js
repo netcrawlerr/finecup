@@ -6,6 +6,6 @@ import {
 const router = Router();
 
 router.post("/pay", makePayment);
-router.get("/verify", verifyPayment);
+router.get("/verify/:tx_ref", verifyPayment);
 
 export default router;
