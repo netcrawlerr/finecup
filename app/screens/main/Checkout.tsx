@@ -43,7 +43,7 @@ const Checkout = () => {
   const [locationInput, setLocationInput] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false); 
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isPaymentFailed, setIsPaymentFailed] = useState(false);
 
   const [transactionRef, setTransactionRef] = useState(null);
@@ -52,7 +52,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if (isPaymentFailed) {
-      setModalVisible(false); 
+      setModalVisible(false);
     }
   }, [isPaymentFailed]);
 
@@ -75,16 +75,16 @@ const Checkout = () => {
         setModalVisible(false);
         setPaymentSuccess(true);
         setSuccessModalVisible(true);
-        setIsPaymentFailed(false); 
+        setIsPaymentFailed(false);
       } else {
         setPaymentSuccess(false);
-        setIsPaymentFailed(true); 
+        setIsPaymentFailed(true);
         console.log("Payment verification failed");
       }
     } catch (error) {
       console.error("Payment verification error", error);
       setPaymentSuccess(false);
-      setIsPaymentFailed(true); 
+      setIsPaymentFailed(true);
     }
   };
 
@@ -93,7 +93,6 @@ const Checkout = () => {
       const total = getCartTotal();
       console.log("Payment data:", phoneNumber, total);
 
-     
       setTransactionRef(null);
       setCheckoutUrl(null);
 
@@ -117,28 +116,23 @@ const Checkout = () => {
       console.log("New TransactionRef:", newTransactionRef);
 
       setTransactionRef(newTransactionRef);
-      setCheckoutUrl(newCheckoutUrl); 
+      setCheckoutUrl(newCheckoutUrl);
 
       console.log("Checkout URL:", checkoutUrl);
       console.log("Transactionref:", transactionRef);
-
-
 
       const result = await WebBrowser.openBrowserAsync(newCheckoutUrl);
 
       verifyPayment(newTransactionRef);
       console.log("result", result);
-
-     
     } catch (error) {
       console.log("Payment Error:", error);
       setPaymentSuccess(false);
-      setIsPaymentFailed(true); 
+      setIsPaymentFailed(true);
     }
   };
 
   const handleCancelPayment = () => {
-   
     setTransactionRef(null);
     setCheckoutUrl(null);
     setModalVisible(false);
@@ -194,7 +188,6 @@ const Checkout = () => {
           contentContainerStyle={{ paddingBottom: 100 }}
         >
           <View>
-            {/* Header */}
             <View className="flex flex-row items-center justify-between mb-4 mt-20 px-4 relative">
               <TouchableOpacity
                 onPress={() => router.back()}
@@ -207,7 +200,6 @@ const Checkout = () => {
               </Text>
             </View>
 
-            {/* summary */}
             <View className="px-4 py-4 bg-gray-100 mb-4">
               <Text className="text-xl font-bold mb-2">Order Summary</Text>
               {cart.map((item) => (
@@ -294,7 +286,6 @@ const Checkout = () => {
           </MapView>
         </ScrollView>
 
-        {/* Bottom  */}
         <View className="absolute bottom-0 left-0 right-0 pb-8 pt-4 px-8 bg-slate-200">
           <TouchableOpacity
             className="bg-custom-red py-4 w-full items-center rounded-lg"
@@ -306,7 +297,6 @@ const Checkout = () => {
           </TouchableOpacity>
         </View>
 
-      
         <Modal
           animationType="slide"
           transparent={true}

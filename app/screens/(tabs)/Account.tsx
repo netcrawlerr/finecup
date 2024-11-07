@@ -8,9 +8,9 @@ const Account = () => {
         Account
       </Text>
       <View style={{ marginBottom: 20 }}>
-        <Text style={{ fontSize: 18, marginBottom: 10 }}>Name: John Doe</Text>
+        <Text style={{ fontSize: 18, marginBottom: 10 }}>Name: csdfvvdsd</Text>
         <Text style={{ fontSize: 18, marginBottom: 10 }}>
-          Email: john@example.com
+          Email: xsass@example.com
         </Text>
         <Text style={{ fontSize: 18, marginBottom: 10 }}>
           Phone: (123) 456-7890

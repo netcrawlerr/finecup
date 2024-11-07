@@ -8,7 +8,7 @@ import {
   View,
   Image,
 } from "react-native";
-import useStore from "@/hooks/useStore"; 
+import useStore from "@/hooks/useStore";
 import { router } from "expo-router";
 import axios from "axios";
 import { BASE_URL } from "@/constants/URL";
@@ -19,7 +19,6 @@ const Menu = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
- 
   const products = useStore((state) => state.products);
   const setProducts = useStore((state) => state.setProducts);
 
@@ -30,12 +29,11 @@ const Menu = () => {
     ...new Set(products.map((product) => product.category)),
   ];
 
-
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(BASE_URL + "/api/products");
-        setProducts(response.data); 
+        setProducts(response.data);
         // console.log("Store products MENU", products);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -45,7 +43,6 @@ const Menu = () => {
     fetchProducts();
   }, [setProducts]);
 
-  
   useEffect(() => {
     const filtered = products.filter(
       (product) =>
@@ -63,15 +60,8 @@ const Menu = () => {
   return (
     <View className="flex-1 bg-white">
       <View className="flex-row items-center justify-between px-4 pt-12 pb-4">
-        {/* <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={28} color="#113225" />
-        </TouchableOpacity> */}
         <Text className="text-2xl text-custom-red font-bold">Menu</Text>
-        {/* <View>
-          <Text>Account</Text>
-        </View> */}
         <AccountDropdown />
-        {/* <View style={{ width: 28 }} /> */}
       </View>
 
       <View className="px-4 pt-4">

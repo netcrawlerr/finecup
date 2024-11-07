@@ -54,7 +54,6 @@ const Order = () => {
     <SafeAreaView className="flex-1">
       <ScrollView className="flex-1">
         <View>
-          {/* Header */}
           <View className="flex flex-row items-center justify-between mb-4 mt-20 px-4 relative">
             <TouchableOpacity onPress={() => router.back()} className="z-10">
               <Ionicons
@@ -70,7 +69,6 @@ const Order = () => {
           </View>
 
           {/* for my image background area */}
-          {/* 2 */}
           <View className="flex justify-center items-center rounded-tr-3xl bg-custom-red h-[200px]">
             <Image
               source={selectedProduct.image}
@@ -78,7 +76,6 @@ const Order = () => {
             />
           </View>
 
-          {/* 3 */}
           <View className="flex flex-row justify-between px-8 mt-5">
             <View className="flex flex-col">
               <Text className="text-2xl font-bold">{selectedProduct.name}</Text>
@@ -102,7 +99,6 @@ const Order = () => {
             </View>
           </View>
 
-          {/* 4 */}
           <View className="flex flex-row justify-between px-8 mt-5">
             <View className="flex flex-col">
               <Text className="text-xl font-semibold mb-2">Description</Text>

@@ -23,12 +23,10 @@ const Cart = () => {
   const total = getCartTotal();
 
   const handleRemoveItem = (productId: string) => {
-   
     removeFromCart(productId);
   };
 
   const handleUpdateQuantity = (productId: string, newQuantity: number) => {
-   
     updateCartItemQuantity(productId, newQuantity);
   };
 
@@ -60,7 +58,7 @@ const Cart = () => {
           {total && total > 0 ? (
             cart.map((item) => (
               <View
-                key={item._id} 
+                key={item._id}
                 className="flex-row justify-between items-center px-4 py-4 border-b border-gray-200"
               >
                 <Image
@@ -78,7 +76,7 @@ const Cart = () => {
                     className="border py-1 px-3 rounded"
                     onPress={() =>
                       handleUpdateQuantity(
-                        item._id, 
+                        item._id,
                         Math.max(1, item.quantity - 1)
                       )
                     }
@@ -88,8 +86,8 @@ const Cart = () => {
                   <Text className="mx-2 text-lg">{item.quantity}</Text>
                   <TouchableOpacity
                     className="border py-1 px-3 rounded"
-                    onPress={
-                      () => handleUpdateQuantity(item._id, item.quantity + 1)
+                    onPress={() =>
+                      handleUpdateQuantity(item._id, item.quantity + 1)
                     }
                   >
                     <Text className="text-lg font-bold">+</Text>
@@ -126,7 +124,7 @@ const Cart = () => {
         </View>
       </ScrollView>
 
-      {/* Bottom  */}
+      {/* condit */}
       {total && total > 0 ? (
         <View className="absolute bottom-0 left-0 right-0 pb-8 pt-4 px-8">
           <View className="flex flex-row justify-between items-center mb-4">
